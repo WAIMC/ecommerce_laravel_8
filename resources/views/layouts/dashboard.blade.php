@@ -236,6 +236,7 @@ $menu = Config('menu');
                              with font-awesome or any other icon font library -->
                         {{-- menu slide bar admin with file config menu.php --}}
                         @foreach ($menu as $mn)
+                            @if(Auth::guard('adminAuth')->user()->can($mn['route']))
                             <li class="nav-item">
                                 <a href="{{ route($mn['route']) }}" class="nav-link">
                                     <i class="nav-icon fas {{ $mn['icon'] }}"></i>
@@ -249,16 +250,19 @@ $menu = Config('menu');
                                 @if (isset($mn['items']))
                                     <ul class="nav nav-treeview">
                                         @foreach ($mn['items'] as $item)
-                                            <li class="nav-item">
-                                                <a href="{{ route($item['route']) }}" class="nav-link">
-                                                    <i class="far fa-circle nav-icon"></i>
-                                                    <p>{{ $item['label'] }}</p>
-                                                </a>
-                                            </li>
+                                            @if(Auth::guard('adminAuth')->user()->can($item['route']))
+                                                <li class="nav-item">
+                                                    <a href="{{ route($item['route']) }}" class="nav-link">
+                                                        <i class="far fa-circle nav-icon"></i>
+                                                        <p>{{ $item['label'] }}</p>
+                                                    </a>
+                                                </li>
+                                            @endif
                                         @endforeach
                                     </ul>
                                 @endif
                             </li>
+                            @endif
                         @endforeach
                     </ul>
                 </nav>

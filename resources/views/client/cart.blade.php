@@ -61,8 +61,8 @@
                                             @foreach ($cart as $item_cart)
                                                 <tr>
                                                     <td class="product_remove"><a href="{{route('cart.destroy',['id_cart'=>$item_cart->rowId])}}"><i class="fa fa-trash-o"></i></a></td>
-                                                    <td class="product_thumb"><a href="product-details-default.html"><img src="{{ url('public/uploads/product/',$item_cart->options->image) }}" alt=""></a></td>
-                                                    <td class="product_name"><a href="product-details-default.html">{{$item_cart->name}}</a></td>
+                                                    <td class="product_thumb"><a href=""><img src="{{ url('public/uploads/product/',$item_cart->options->image) }}" alt=""></a></td>
+                                                    <td class="product_name"><a href="">{{$item_cart->name}}</a></td>
                                                     <td class="product-price">${{$item_cart->price}}</td>
                                                     <td class="product-color">{{$item_cart->options->color}}</td>
                                                     <td class="product_quantity">

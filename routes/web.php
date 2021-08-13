@@ -30,6 +30,7 @@ Route::post('/Admin/register','Admin\Auth\RegisterController@postRegister')->nam
 
 Route::prefix('admin')->middleware('adminAuth')->group(function () {
     Route::get('/', 'Admin\AdminController@index')->name('admin.index');
+    Route::post('/filter_chart_by_date','Admin\AdminController@filter_chart_by_date')->name('admin.filter_chart_by_date');
 
     // register resource route for admin
     Route::resources([
@@ -38,8 +39,11 @@ Route::prefix('admin')->middleware('adminAuth')->group(function () {
         'variantProduct'=>Admin\VariantProductController::class,
         'banner'=>Admin\BannerController::class,
         'order'=>Admin\OrderController::class,
-        'customer_management'=>Admin\CustomerManagementController::class,
+        'cusMan'=>Admin\CustomerManagementController::class,
         'review'=>Admin\ReviewController::class,
+        'settingLink'=>Admin\SettingLinkController::class,
+        'role'=>Admin\RoleController::class,
+        'decentralize'=>Admin\DecentralizeController::class
     ]);
 
     // logout authentication
@@ -60,6 +64,8 @@ Route::get('/', 'Client\ClientController@index')->name('client.index');
 Route::get('/shop', 'Client\ClientController@shop')->name('client.shop');
 
 Route::get('/wishlist', 'Client\ClientController@wishlist')->name('client.wishlist');
+Route::get('/wishlist/store', 'Client\ClientController@storeWishlist')->name('client.storeWishlist');
+Route::get('/wishlist/destroy', 'Client\ClientController@destroyWishlist')->name('client.destroyWishlist');
 
 Route::get('/checkout', 'Client\ClientController@checkout')->name('client.checkout');
 

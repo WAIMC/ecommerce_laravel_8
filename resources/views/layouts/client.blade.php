@@ -131,7 +131,13 @@
                                     <li>
                                         <a href="#offcanvas-wishlish" class="offcanvas-toggle">
                                             <i class="icon-heart"></i>
-                                            <span class="item-count">3</span>
+                                            @if (Session::has('wishlist'))
+                                                <?php $count_wl = 0; ?>
+                                                @foreach (Session::get('wishlist') as $key=>$value)
+                                                    <?php $count_wl +=1; ?>
+                                                @endforeach
+                                            <span class="item-count">{{$count_wl}}</span>
+                                            @endif
                                         </a>
                                     </li>
                                     <li>
@@ -169,7 +175,7 @@
                         <div class="mobile-header-left">
                             <ul class="mobile-menu-logo">
                                 <li>
-                                    <a href="index.html">
+                                    <a href="{{route('client.index')}}">
                                         <div class="logo">
                                             <img src="{{ url('public/client') }}/images/logo/logo_white.png" alt="">
                                         </div>
@@ -190,13 +196,19 @@
                                 <li>
                                     <a href="#offcanvas-wishlish" class="offcanvas-toggle">
                                         <i class="icon-heart"></i>
-                                        <span class="item-count">3</span>
+                                        @if (Session::has('wishlist'))
+                                            <?php $count_wl = 0; ?>
+                                            @foreach (Session::get('wishlist') as $key=>$value)
+                                                <?php $count_wl +=1; ?>
+                                            @endforeach
+                                            <span class="item-count">{{$count_wl}}</span>
+                                        @endif
                                     </a>
                                 </li>
                                 <li>
                                     <a href="#offcanvas-add-cart" class="offcanvas-toggle">
                                         <i class="icon-bag"></i>
-                                        <span class="item-count">3</span>
+                                        <span class="item-count">{{Cart::count()}}</span>
                                     </a>
                                 </li>
                                 <li>
@@ -264,7 +276,7 @@
                 <!-- Start Mobile contact Info -->
                 <div class="mobile-contact-info">
                     <div class="logo">
-                        <a href="index.html"><img src="{{ url('public/client') }}/images/logo/logo_white.png" alt=""></a>
+                        <a href="{{route('client.index')}}"><img src="{{ url('public/client') }}/images/logo/logo_white.png" alt=""></a>
                     </div>
 
                     <address class="address">
@@ -302,7 +314,7 @@
             <!-- Start Mobile contact Info -->
             <div class="mobile-contact-info">
                 <div class="logo">
-                    <a href="index.html"><img src="{{ url('public/client') }}/images/logo/logo_white.png" alt=""></a>
+                    <a href="{{route('client.index')}}"><img src="{{ url('public/client') }}/images/logo/logo_white.png" alt=""></a>
                 </div>
 
                 <address class="address">
@@ -386,60 +398,30 @@
             <div class="offcanvas-wishlist-wrapper">
                 <h4 class="offcanvas-title">Wishlist</h4>
                 <ul class="offcanvas-wishlist">
-                    <li class="offcanvas-wishlist-item-single">
-                        <div class="offcanvas-wishlist-item-block">
-                            <a href="#" class="offcanvas-wishlist-item-image-link">
-                                <img src="{{ url('public/client') }}/images/product/default/home-3/default-1.jpg" alt=""
-                                    class="offcanvas-wishlist-image">
-                            </a>
-                            <div class="offcanvas-wishlist-item-content">
-                                <a href="#" class="offcanvas-wishlist-item-link">Car Wheel</a>
-                                <div class="offcanvas-wishlist-item-details">
-                                    <span class="offcanvas-wishlist-item-details-quantity">1 x </span>
-                                    <span class="offcanvas-wishlist-item-details-price">$49.00</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="offcanvas-wishlist-item-delete text-right">
-                            <a href="#" class="offcanvas-wishlist-item-delete"><i class="fa fa-trash-o"></i></a>
-                        </div>
-                    </li>
-                    <li class="offcanvas-wishlist-item-single">
-                        <div class="offcanvas-wishlist-item-block">
-                            <a href="#" class="offcanvas-wishlist-item-image-link">
-                                <img src="{{ url('public/client') }}/images/product/default/home-2/default-1.jpg" alt=""
-                                    class="offcanvas-wishlist-image">
-                            </a>
-                            <div class="offcanvas-wishlist-item-content">
-                                <a href="#" class="offcanvas-wishlist-item-link">Car Vails</a>
-                                <div class="offcanvas-wishlist-item-details">
-                                    <span class="offcanvas-wishlist-item-details-quantity">3 x </span>
-                                    <span class="offcanvas-wishlist-item-details-price">$500.00</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="offcanvas-wishlist-item-delete text-right">
-                            <a href="#" class="offcanvas-wishlist-item-delete"><i class="fa fa-trash-o"></i></a>
-                        </div>
-                    </li>
-                    <li class="offcanvas-wishlist-item-single">
-                        <div class="offcanvas-wishlist-item-block">
-                            <a href="#" class="offcanvas-wishlist-item-image-link">
-                                <img src="{{ url('public/client') }}/images/product/default/home-3/default-1.jpg" alt=""
-                                    class="offcanvas-wishlist-image">
-                            </a>
-                            <div class="offcanvas-wishlist-item-content">
-                                <a href="#" class="offcanvas-wishlist-item-link">Shock Absorber</a>
-                                <div class="offcanvas-wishlist-item-details">
-                                    <span class="offcanvas-wishlist-item-details-quantity">1 x </span>
-                                    <span class="offcanvas-wishlist-item-details-price">$350.00</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="offcanvas-wishlist-item-delete text-right">
-                            <a href="#" class="offcanvas-wishlist-item-delete"><i class="fa fa-trash-o"></i></a>
-                        </div>
-                    </li>
+                    @if (Session::has('wishlist'))
+                        @foreach (Session::get('wishlist') as $key=>$value)
+                            @foreach ($value as $show_wl)
+                                <li class="offcanvas-wishlist-item-single">
+                                    <div class="offcanvas-wishlist-item-block">
+                                        <a href="#" class="offcanvas-wishlist-item-image-link">
+                                            <img src="{{ url('public/uploads/product/',$show_wl['image']) }}" alt=""
+                                                class="offcanvas-wishlist-image">
+                                        </a>
+                                        <div class="offcanvas-wishlist-item-content">
+                                            <a href="#" class="offcanvas-wishlist-item-link">{{$show_wl['name']}}</a>
+                                            <div class="offcanvas-wishlist-item-details">
+                                                <span class="offcanvas-wishlist-item-details-quantity">1 x </span>
+                                                <span class="offcanvas-wishlist-item-details-price">${{$show_wl['price']}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="offcanvas-wishlist-item-delete text-right">
+                                        <a href="{{route('client.destroyWishlist',['id_vp' => $show_wl['id_vp']])}}" class="offcanvas-wishlist-item-delete"><i class="fa fa-trash-o"></i></a>
+                                    </div>
+                                </li>   
+                            @endforeach
+                        @endforeach
+                    @endif
                 </ul>
                 <ul class="offcanvas-wishlist-action-button">
                     <li><a href="{{ route('client.wishlist') }}" class="btn btn-block btn-pink">View wishlist</a></li>
@@ -489,8 +471,8 @@
                                     data-aos-delay="0">
                                     <h5 class="title">INFORMATION</h5>
                                     <ul class="footer-nav">
-                                        <li><a href="#">Delivery Information</a></li>
-                                        <li><a href="#">Terms & Conditions</a></li>
+                                        <li><a href="{{route('customer.index')}}">Delivery Information</a></li>
+                                        <li><a href="{{route('client.about')}}">Terms & Conditions</a></li>
                                         <li><a href="{{ route('client.contact') }}">Contact</a></li>
                                         <li><a href="#">Returns</a></li>
                                     </ul>
@@ -503,11 +485,11 @@
                                     data-aos-delay="200">
                                     <h5 class="title">MY ACCOUNT</h5>
                                     <ul class="footer-nav">
-                                        <li><a href="my-account.html">My account</a></li>
+                                        <li><a href="{{route('customer.index')}}">My account</a></li>
                                         <li><a href="{{ route('client.wishlist') }}">Wishlist</a></li>
-                                        <li><a href="privacy-policy.html">Privacy Policy</a></li>
-                                        <li><a href="faq.html">Frequently Questions</a></li>
-                                        <li><a href="#">Order History</a></li>
+                                        <li><a href="{{route('client.about')}}">Privacy Policy</a></li>
+                                        <li><a href="{{route('client.contact')}}">Frequently Questions</a></li>
+                                        <li><a href="{{route('customer.index')}}">Order History</a></li>
                                     </ul>
                                 </div>
                                 <!-- End Footer Single Item -->
@@ -518,11 +500,11 @@
                                     data-aos-delay="400">
                                     <h5 class="title">CATEGORIES</h5>
                                     <ul class="footer-nav">
-                                        <li><a href="#">Decorative</a></li>
-                                        <li><a href="#">Kitchen utensils</a></li>
-                                        <li><a href="#">Chair & Bar stools</a></li>
-                                        <li><a href="#">Sofas and Armchairs</a></li>
-                                        <li><a href="#">Interior lighting</a></li>
+                                        <li><a href="{{route('client.shop')}}">Decorative</a></li>
+                                        <li><a href="{{route('client.shop')}}">Kitchen utensils</a></li>
+                                        <li><a href="{{route('client.shop')}}">Chair & Bar stools</a></li>
+                                        <li><a href="{{route('client.shop')}}">Sofas and Armchairs</a></li>
+                                        <li><a href="{{route('client.shop')}}">Interior lighting</a></li>
                                     </ul>
                                 </div>
                                 <!-- End Footer Single Item -->
@@ -533,12 +515,11 @@
                                     data-aos-delay="600">
                                     <h5 class="title">ABOUT US</h5>
                                     <div class="footer-about">
-                                        <p>We are a team of designers and developers that create high quality Magento,
-                                            Prestashop, Opencart.</p>
+                                        <p>I am a designers and developers that create high quality MC Wai.</p>
 
                                         <address>
-                                            <span>Address: 4710-4890 Breckinridge St, Fayettevill</span>
-                                            <span>Email: yourmail@mail.com</span>
+                                            <span>Address: 0987 862 634 Da Nang City</span>
+                                            <span>Email: dovanvinhwao@mail.com</span>
                                         </address>
                                     </div>
                                 </div>
@@ -589,7 +570,7 @@
                             class="row justify-content-between align-items-center align-items-center flex-column flex-md-row mb-n6">
                             <div class="col-auto mb-6">
                                 <div class="footer-copyright">
-                                    <p> COPYRIGHT &copy; <a href="https://hasthemes.com/" target="_blank">HasThemes</a>. ALL
+                                    <p> COPYRIGHT &copy; <a href="https://github.com/WAIMC" target="_blank">MC Wai</a>. ALL
                                         RIGHTS RESERVED.</p>
                                 </div>
                             </div>

@@ -32,6 +32,25 @@ class AdminController extends Controller
         return view('dashboard.home',compact('order_detail','totalOrder','category','totalCustomer','totalProduct','totalReview'));
     }
 
+    public function filter_chart_by_date(Request $request)
+    {
+        $data = request()->all();
+        $formDate = request()->fromDate;
+        $toDate = request()->toDate;
+        $get = OrderDetail::WhereBetween('created_at',[$formDate,$toDate])->orderBy('created_at','ASC')->get();
+        foreach ($get as $key => $value) {
+            $chartData[] = array(
+                'name'=>$value->name,
+                'quantity'=>$value->quantity,
+                'price'=>$value->price,
+                'created_at'=> $value->created_at->format('Y-m-d'),
+                'sales'=>$value->quantity*$value->price,
+                'profit'=> ($value->quantity*$value->price)*0.3
+            ); 
+        }
+        echo $data = json_encode($chartData);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

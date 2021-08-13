@@ -9,7 +9,6 @@
 
     {{-- main section for master layout --}}
 @section('main')
-
 <div class="container">
     <div class="row">
         <div class="col-lg-3 col-6">
@@ -57,7 +56,7 @@
                 <div class="icon text-white">
                     <i class="fas fa-user-plus"></i>
                 </div>
-                <a href="{{ route('customer_management.index') }}" class="small-box-footer">
+                <a href="{{ route('cusMan.index') }}" class="small-box-footer">
                     More info <i class="fas fa-arrow-circle-right"></i>
                 </a>
             </div>
@@ -99,17 +98,28 @@
                 </div>
                 <div class="card-body">
                     <div class="chart">
-                        <div class="chartjs-size-monitor">
-                            <div class="chartjs-size-monitor-expand">
-                                <div class=""></div>
+                        <div class="row">
+                            <div class="col-5">
+                                <form class="form-inline">
+                                    <div class="form-group">
+                                        <label for="datepicker" class="mr-2">From Time</label>
+                                        <input type="text" name="fromDate" id="datepicker" class="form-control">
+                                    </div>
+                                </form>
                             </div>
-                            <div class="chartjs-size-monitor-shrink">
-                                <div class=""></div>
+                            <div class="col-5">
+                                <form class="form-inline">
+                                    <div class="form-group">
+                                        <label for="datepicker2" class="mr-2">To Time</label>
+                                        <input type="text" name="toDate" id="datepicker2" class="form-control">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="col-2">
+                                <button class="btn btn-success" type="submit" id="searchChart" >Search</button>
                             </div>
                         </div>
-                        <canvas id="areaChart"
-                            style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%; display: block; width: 324px;"
-                            width="648" height="500" class="chartjs-render-monitor"></canvas>
+                        <div class="row" id="chart" style="height: 250px;"></div>
                     </div>
                 </div>
                 <!-- /.card-body -->
@@ -144,7 +154,7 @@
         <div class="col-md-6">
             
              <!-- jQuery Knob -->
-             <div class="card">
+             <div class="card card-blue">
                 <div class="card-header">
                   <h3 class="card-title">
                     <i class="far fa-chart-bar"></i>
@@ -205,209 +215,220 @@
 {{-- customize load css and js for master layout --}}
 @section('css')
     {{-- css here --}}
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 @stop
 @section('js')
   {{-- js here --}}
+  <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script>
-    $(function() {
+    $(document).ready(function () {
+        $(function() {
+
+            // get datepicker 
+            $( function() {
+                $( "#datepicker" ).datepicker({
+                    "dateFormat":"yy-mm-dd"
+                });
+            } );
+
+            $( function() {
+                $( "#datepicker2" ).datepicker({
+                    "dateFormat":"yy-mm-dd"
+                });
+            } );
+
+            
+
+            chart30day();
+
+            var chart = new Morris.Area({
+            element: 'chart',
+            lineColor:['#819C79','#FC8710','#FF6541','#A4ADD3','#766B56'],
+            pointColor:['#ffffff'],
+            pointStrokeColor:['black'],
+            parseTime:false,
+            xkey: 'created_at',
+            ykeys: ['price','quantity','sales','profit'],
+            labels: ['price','quantity','sales','profit']
+            });
+
+            // search chart with date
+            $("#searchChart").click(function (e) { 
+                e.preventDefault();
+                var _token = $('input[name="_token"]').val();
+                var fromDate = $('input[name="fromDate"]').val();
+                var toDate = $('input[name="toDate"]').val();
+                $.ajax({
+                    type: "POST",
+                    url: "{{route('admin.filter_chart_by_date')}}",
+                    data: {fromDate : fromDate, toDate : toDate, _token : _token},
+                    dataType:"JSON",
+                    success: function (data) {
+                        chart.setData(data);
+                    },
+                    error: function (data, textStatus, errorThrown) {
+                        console.log(errorThrown);
+                    },
+                });
+            });
+
+            function chart30day() {
+                var today = new Date();
+                var getMonth = today.getUTCMonth()+1;
+                var setYMD = today.getUTCFullYear() + "-" + getMonth + "-" + today.getDay();
+                
+                var day_last = new Date(today.setDate(today.getDay()-30));
+                var getMonth2 = day_last.getMonth()+1;
+                var setYMD2 = day_last.getFullYear() + "-" + getMonth2 + "-" + day_last.getDay();
+
+                var _token = $('input[name="_token"]').val();
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{route('admin.filter_chart_by_date')}}",
+                    data: {fromDate : setYMD2, toDate : setYMD, _token : _token},
+                    dataType:"JSON",
+                    success: function (data) {
+                        chart.setData(data);
+                    },
+                    error: function (data, textStatus, errorThrown) {
+                        console.log(errorThrown);
+                    },
+                });
+            };
+
+            
+
+            var order = {!! json_encode($order_detail->toArray()) !!};
+            var label = [];
+            var data_main = [];
+            const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            order.forEach(element => {
+            label.push(new Date(""+element['created_at']+"").getUTCFullYear() + "/" + new Date(""+element['created_at']+"").getUTCMonth() + " / " +new Date(""+element['created_at']+"").getUTCDay() );
+            data_main.push( element['price']*element['quantity'] );
+            });
 
 
-      var order = {!! json_encode($order_detail->toArray()) !!};
-      var label = [];
-      var data_main = [];
-      const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-      order.forEach(element => {
-        
-        label.push(new Date(""+element['created_at']+"").getUTCFullYear() + "/" + new Date(""+element['created_at']+"").getUTCMonth() + " / " +new Date(""+element['created_at']+"").getUTCDay() );
-        data_main.push( element['price']*element['quantity'] );
-
-      });
-
-        /* ChartJS
-          * -------
-          * Here we will create a few charts using ChartJS
-          */
-
-        //--------------
-        //- AREA CHART -
-        //--------------
-
-        // Get context with jQuery - using jQuery's .get() method.
-        var areaChartCanvas = $('#areaChart').get(0).getContext('2d')
-
-        var areaChartData = {
-            labels: label,
-            datasets: [{
-                    label: 'Digital Goods',
-                    backgroundColor: 'rgba(60,141,188,0.9)',
-                    borderColor: 'rgba(60,141,188,0.8)',
-                    pointRadius: false,
-                    pointColor: '#3b8bba',
-                    pointStrokeColor: 'rgba(60,141,188,1)',
-                    pointHighlightFill: '#fff',
-                    pointHighlightStroke: 'rgba(60,141,188,1)',
-                    data: data_main
-                },
+            var category = {!! json_encode($category->toArray()) !!};
+            var labels_category = [];
+            category.forEach(catg => {
+                labels_category.push(catg['name']);
+            });
+            //-------------
+            //- DONUT CHART -
+            //-------------
+            // Get context with jQuery - using jQuery's .get() method.
+            var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
+            var donutData        = {
+            labels: labels_category,
+            datasets: [
                 {
-                    label: 'Electronics',
-                    backgroundColor: 'rgba(210, 214, 222, 1)',
-                    borderColor: 'rgba(210, 214, 222, 1)',
-                    pointRadius: false,
-                    pointColor: 'rgba(210, 214, 222, 1)',
-                    pointStrokeColor: '#c1c7d1',
-                    pointHighlightFill: '#fff',
-                    pointHighlightStroke: 'rgba(220,220,220,1)',
-                    data: [65, 59, 80, 81, 56, 55, 40]
-                },
+                data: [3,3,3,3,3],
+                backgroundColor : ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
+                }
             ]
-        }
+            }
+            var donutOptions     = {
+            maintainAspectRatio : false,
+            responsive : true,
+            }
+            //Create pie or douhnut chart
+            // You can switch between pie and douhnut using the method below.
+            new Chart(donutChartCanvas, {
+            type: 'doughnut',
+            data: donutData,
+            options: donutOptions
+            })
 
-        var areaChartOptions = {
-            maintainAspectRatio: false,
-            responsive: true,
-            legend: {
-                display: false
+
+            /* jQueryKnob */
+
+            var total_order = {{$totalOrder->count()}};
+            var status_waiting = {{$totalOrder->where('status',0)->count()}};
+            var status_shipping = {{$totalOrder->where('status',1)->count()}};
+            var status_completing = {{$totalOrder->where('status',2)->count()}};
+            var status_cannceling = {{$totalOrder->where('status',3)->count()}};
+            $('#wait').val(100*status_waiting/total_order);
+            $('#ship').val(100*status_shipping/total_order);
+            $('#complete').val(100*status_completing/total_order);
+            $('#canncel').val(100*status_cannceling/total_order);
+
+            $('.knob').knob({
+            /*change : function (value) {
+            //console.log("change : " + value);
             },
-            scales: {
-                xAxes: [{
-                    gridLines: {
-                        display: false,
-                    }
-                }],
-                yAxes: [{
-                    gridLines: {
-                        display: false,
-                    }
-                }]
-            }
-        }
+            release : function (value) {
+            console.log("release : " + value);
+            },
+            cancel : function () {
+            console.log("cancel : " + this.value);
+            },*/
 
-        // This will get the first returned node in the jQuery collection.
-        new Chart(areaChartCanvas, {
-            type: 'line',
-            data: areaChartData,
-            options: areaChartOptions
-        })
+            draw: function () {
 
+                // "tron" case
+                if (this.$.data('skin') == 'tron') {
 
+                var a   = this.angle(this.cv)  // Angle
+                    ,
+                    sa  = this.startAngle          // Previous start angle
+                    ,
+                    sat = this.startAngle         // Start angle
+                    ,
+                    ea                            // Previous end angle
+                    ,
+                    eat = sat + a                 // End angle
+                    ,
+                    r   = true
 
+                this.g.lineWidth = this.lineWidth
 
-
-        var category = {!! json_encode($category->toArray()) !!};
-        var labels_category = [];
-        category.forEach(catg => {
-            labels_category.push(catg['name']);
-        });
-        //-------------
-        //- DONUT CHART -
-        //-------------
-        // Get context with jQuery - using jQuery's .get() method.
-        var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
-        var donutData        = {
-        labels: labels_category,
-        datasets: [
-            {
-            data: [3,3,3,3,3],
-            backgroundColor : ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
-            }
-        ]
-        }
-        var donutOptions     = {
-        maintainAspectRatio : false,
-        responsive : true,
-        }
-        //Create pie or douhnut chart
-        // You can switch between pie and douhnut using the method below.
-        new Chart(donutChartCanvas, {
-        type: 'doughnut',
-        data: donutData,
-        options: donutOptions
-        })
-
-
-        /* jQueryKnob */
-
-        var total_order = {{$totalOrder->count()}};
-        var status_waiting = {{$totalOrder->where('status',0)->count()}};
-        var status_shipping = {{$totalOrder->where('status',1)->count()}};
-        var status_completing = {{$totalOrder->where('status',2)->count()}};
-        var status_cannceling = {{$totalOrder->where('status',3)->count()}};
-        $('#wait').val(100*status_waiting/total_order);
-        $('#ship').val(100*status_shipping/total_order);
-        $('#complete').val(100*status_completing/total_order);
-        $('#canncel').val(100*status_cannceling/total_order);
-
-        $('.knob').knob({
-        /*change : function (value) {
-        //console.log("change : " + value);
-        },
-        release : function (value) {
-        console.log("release : " + value);
-        },
-        cancel : function () {
-        console.log("cancel : " + this.value);
-        },*/
-
-        draw: function () {
-
-            // "tron" case
-            if (this.$.data('skin') == 'tron') {
-
-            var a   = this.angle(this.cv)  // Angle
-                ,
-                sa  = this.startAngle          // Previous start angle
-                ,
-                sat = this.startAngle         // Start angle
-                ,
-                ea                            // Previous end angle
-                ,
-                eat = sat + a                 // End angle
-                ,
-                r   = true
-
-            this.g.lineWidth = this.lineWidth
-
-            this.o.cursor
-            && (sat = eat - 0.3)
-            && (eat = eat + 0.3)
-
-            if (this.o.displayPrevious) {
-                ea = this.startAngle + this.angle(this.value)
                 this.o.cursor
-                && (sa = ea - 0.3)
-                && (ea = ea + 0.3)
+                && (sat = eat - 0.3)
+                && (eat = eat + 0.3)
+
+                if (this.o.displayPrevious) {
+                    ea = this.startAngle + this.angle(this.value)
+                    this.o.cursor
+                    && (sa = ea - 0.3)
+                    && (ea = ea + 0.3)
+                    this.g.beginPath()
+                    this.g.strokeStyle = this.previousColor
+                    this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sa, ea, false)
+                    this.g.stroke()
+                }
+
                 this.g.beginPath()
-                this.g.strokeStyle = this.previousColor
-                this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sa, ea, false)
+                this.g.strokeStyle = r ? this.o.fgColor : this.fgColor
+                this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sat, eat, false)
                 this.g.stroke()
+
+                this.g.lineWidth = 2
+                this.g.beginPath()
+                this.g.strokeStyle = this.o.fgColor
+                this.g.arc(this.xy, this.xy, this.radius - this.lineWidth + 1 + this.lineWidth * 2 / 3, 0, 2 * Math.PI, false)
+                this.g.stroke()
+
+                return false
+                }
             }
 
-            this.g.beginPath()
-            this.g.strokeStyle = r ? this.o.fgColor : this.fgColor
-            this.g.arc(this.xy, this.xy, this.radius - this.lineWidth, sat, eat, false)
-            this.g.stroke()
+            });
+            /* END JQUERY KNOB */
 
-            this.g.lineWidth = 2
-            this.g.beginPath()
-            this.g.strokeStyle = this.o.fgColor
-            this.g.arc(this.xy, this.xy, this.radius - this.lineWidth + 1 + this.lineWidth * 2 / 3, 0, 2 * Math.PI, false)
-            this.g.stroke()
+            //INITIALIZE SPARKLINE CHARTS
+            var sparkline1 = new Sparkline($('#sparkline-1')[0], { width: 240, height: 70, lineColor: '#92c1dc', endColor: '#92c1dc' })
+            var sparkline2 = new Sparkline($('#sparkline-2')[0], { width: 240, height: 70, lineColor: '#f56954', endColor: '#f56954' })
+            var sparkline3 = new Sparkline($('#sparkline-3')[0], { width: 240, height: 70, lineColor: '#3af221', endColor: '#3af221' })
 
-            return false
-            }
-        }
-        })
-        /* END JQUERY KNOB */
+            sparkline1.draw([1000, 1200, 920, 927, 931, 1027, 819, 930, 1021])
+            sparkline2.draw([515, 519, 520, 522, 652, 810, 370, 627, 319, 630, 921])
+            sparkline3.draw([15, 19, 20, 22, 33, 27, 31, 27, 19, 30, 21])
 
-        //INITIALIZE SPARKLINE CHARTS
-        var sparkline1 = new Sparkline($('#sparkline-1')[0], { width: 240, height: 70, lineColor: '#92c1dc', endColor: '#92c1dc' })
-        var sparkline2 = new Sparkline($('#sparkline-2')[0], { width: 240, height: 70, lineColor: '#f56954', endColor: '#f56954' })
-        var sparkline3 = new Sparkline($('#sparkline-3')[0], { width: 240, height: 70, lineColor: '#3af221', endColor: '#3af221' })
-
-        sparkline1.draw([1000, 1200, 920, 927, 931, 1027, 819, 930, 1021])
-        sparkline2.draw([515, 519, 520, 522, 652, 810, 370, 627, 319, 630, 921])
-        sparkline3.draw([15, 19, 20, 22, 33, 27, 31, 27, 19, 30, 21])
-
+        });
 
     });
   </script>

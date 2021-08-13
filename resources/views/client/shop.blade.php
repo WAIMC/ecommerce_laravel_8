@@ -76,13 +76,26 @@
                         <!-- Start Single Sidebar Widget -->
                         <div class="sidebar-single-widget">
                             <h6 class="sidebar-title">FILTER BY PRICE</h6>
-                            <div class="sidebar-content">
-                                <div id="slider-range"></div>
-                                <div class="filter-type-price">
-                                    <label for="amount">Price range:</label>
-                                    <input type="text" id="amount">
+                            <form action="">
+                                <div class="sidebar-content">
+                                    <div class="row">
+                                        <div class="col-9">
+                                            <div id="slider-range"></div>
+                                            <div class="filter-type-price">
+                                                <label for="amount">Price range:</label>
+                                                <input type="text" id="amount">
+                                                <input type="hidden" name="start_price" value="" id="start_price">
+                                                <input type="hidden" name="end_price" value="" id="end_price">
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="d-flex align-content-start">
+                                                <button type="submit" class="btn btn-secondary">Filter</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            </form>
                         </div> <!-- End Single Sidebar Widget -->
 
                         <!-- Start Single Sidebar Widget -->
@@ -171,7 +184,7 @@
                                             <a href="?searchCategory={{$ctgr->id}}">{{$ctgr->slug}}</a>
                                         @else
                                             @foreach ($ctgr->categoryChildren as $children)
-                                                <a href="?searchCategory={{$childrenl->id}}">{{$children->slug}}</a>
+                                                <a href="?searchCategory={{$children->id}}">{{$children->slug}}</a>
                                             @endforeach
                                         @endif
                                     @endforeach
@@ -243,50 +256,53 @@
                                                 @foreach ($data_product as $pd)
 
                                                     <?php
+                                                        $start_price = isset(request()->start_price) ? request()->start_price : 0;
+                                                        $end_price = isset(request()->end_price) ? request()->end_price : 2000;
                                                         $variant_product_presentative = $pd->product_variantProduct()->where('status',0)->get();
                                                     ?>
 
                                                     @foreach ($variant_product_presentative as $vpp)
-                                                        
-                                                        <div class="col-xl-4 col-sm-6 col-12">
-                                                            <!-- Start Product Default Single Item -->
-                                                            <div class="product-default-single-item product-color--golden" data-aos="fade-up"  data-aos-delay="0">
-                                                                <div class="image-box">
-                                                                    <a href="{{route('client.product_detail',$pd->id)}}" class="image-link">
-                                                                        <img src="{{ url('public/uploads/product/',$pd->image) }}" alt="">
-                                                                        <img src="{{ url('public/uploads/product/',$pd->image) }}" alt="">
-                                                                    </a>
-                                                                    <div class="action-link">
-                                                                        <div class="action-link-left">
-                                                                            <a href="{{route('cart.store',['id_variant_product'=>$vpp->id, 'name'=>$pd->name, 'price'=>$vpp->discount, 'quantity'=>1, 'color'=>$vpp->color, 'image'=>$pd->image])}}">Add to Cart</a>
+                                                        @if ($vpp->discount >= $start_price && $vpp->discount <= $end_price)
+                                                            
+                                                            <div class="col-xl-4 col-sm-6 col-12">
+                                                                <!-- Start Product Default Single Item -->
+                                                                <div class="product-default-single-item product-color--golden" data-aos="fade-up"  data-aos-delay="0">
+                                                                    <div class="image-box">
+                                                                        <a href="{{route('client.product_detail',$pd->id)}}" class="image-link">
+                                                                            <img src="{{ url('public/uploads/product/',$pd->image) }}" alt="">
+                                                                            <img src="{{ url('public/uploads/product/',$pd->image) }}" alt="">
+                                                                        </a>
+                                                                        <div class="action-link">
+                                                                            <div class="action-link-left">
+                                                                                <a href="{{route('cart.store',['id_variant_product'=>$vpp->id, 'name'=>$pd->name, 'price'=>$vpp->discount, 'quantity'=>1, 'color'=>$vpp->color, 'image'=>$pd->image])}}">Add to Cart</a>
+                                                                            </div>
+                                                                            <div class="action-link-right">
+                                                                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalQuickview_{{$pd->id}}"><i class="icon-magnifier"></i></a>
+                                                                                <a href="{{route('client.storeWishlist',['id_variant_product'=>$vpp->id, 'name'=>$pd->name, 'price'=>$vpp->discount, 'color'=>$vpp->color, 'image'=>$pd->image])}}"><i class="icon-heart"></i></a>
+                                                                                <a href=""><i class="icon-shuffle"></i></a>
+                                                                            </div>
                                                                         </div>
-                                                                        <div class="action-link-right">
-                                                                            <a href="#" data-bs-toggle="modal" data-bs-target="#modalQuickview_{{$pd->id}}"><i class="icon-magnifier"></i></a>
-                                                                            <a href=""><i class="icon-heart"></i></a>
-                                                                            <a href=""><i class="icon-shuffle"></i></a>
+                                                                    </div>
+                                                                    <div class="content">
+                                                                        <div class="content-left">
+                                                                            <h6 class="title"><a href="{{route('client.product_detail',$pd->id)}}">{{$pd->name}}</a></h6>
+                                                                            <ul class="review-star">
+                                                                                <li class="fill"><i class="ion-android-star"></i></li>
+                                                                                <li class="fill"><i class="ion-android-star"></i></li>
+                                                                                <li class="fill"><i class="ion-android-star"></i></li>
+                                                                                <li class="fill"><i class="ion-android-star"></i></li>
+                                                                                <li class="empty"><i class="ion-android-star"></i></li>
+                                                                            </ul>
                                                                         </div>
+                                                                        <div class="content-right">
+                                                                            <span class="price">${{$vpp->discount}}</span>
+                                                                        </div>
+                            
                                                                     </div>
                                                                 </div>
-                                                                <div class="content">
-                                                                    <div class="content-left">
-                                                                        <h6 class="title"><a href="{{route('client.product_detail',$pd->id)}}">{{$pd->name}}</a></h6>
-                                                                        <ul class="review-star">
-                                                                            <li class="fill"><i class="ion-android-star"></i></li>
-                                                                            <li class="fill"><i class="ion-android-star"></i></li>
-                                                                            <li class="fill"><i class="ion-android-star"></i></li>
-                                                                            <li class="fill"><i class="ion-android-star"></i></li>
-                                                                            <li class="empty"><i class="ion-android-star"></i></li>
-                                                                        </ul>
-                                                                    </div>
-                                                                    <div class="content-right">
-                                                                        <span class="price">${{$vpp->discount}}</span>
-                                                                    </div>
-                        
-                                                                </div>
-                                                            </div>
-                                                            <!-- End Product Default Single Item -->
-                                                        </div>
-
+                                                                <!-- End Product Default Single Item -->
+                                                            </div>      
+                                                        @endif
                                                     @endforeach
                                                     
                                                 @endforeach
@@ -325,7 +341,7 @@
                                                                     <div class="product-action-icon-link-list">
                                                                         <a href="{{route('cart.store',['id_variant_product'=>$vpp_t->id, 'name'=>$pd_t->name, 'price'=>$vpp_t->discount, 'quantity'=>1, 'color'=>$vpp_t->color, 'image'=>$pd_t->image])}}" class="btn btn-lg btn-black-default-hover">Add to Cart</a>
                                                                         <a href="#" data-bs-toggle="modal" data-bs-target="#modalQuickview_{{$pd_t->id}}" class="btn btn-lg btn-black-default-hover"><i class="icon-magnifier"></i></a>
-                                                                        <a href="" class="btn btn-lg btn-black-default-hover"><i class="icon-heart"></i></a>
+                                                                        <a href="{{route('client.storeWishlist',['id_variant_product'=>$vpp_t->id, 'name'=>$pd_t->name, 'price'=>$vpp_t->discount, 'color'=>$vpp_t->color, 'image'=>$pd_t->image])}}" class="btn btn-lg btn-black-default-hover"><i class="icon-heart"></i></a>
                                                                         <a href="compare.html" class="btn btn-lg btn-black-default-hover"><i class="icon-shuffle"></i></a>
                                                                     </div>
                                                                 </div>
@@ -367,6 +383,26 @@
 @stop
 @section('js')
     {{-- js here --}}
+    <script>
+        $(function () {
+            $('#slider-range').slider({
+                range: true,
+                min: 0,
+                max: 2000,
+                values: [0, 2000],
+                create: function() {
+                    $("#amount").val("$0 - $2000");
+                },
+                slide: function (event, ui) {
+                    $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
+                    var mi = ui.values[0];
+                    var mx = ui.values[1];
+                    $('#start_price').val(ui.values[0]);
+                    $('#end_price').val(ui.values[1]);
+                }
+            })
+        });
+    </script>
     <script>
         $('#softBy').change(function (e) { 
             e.preventDefault();

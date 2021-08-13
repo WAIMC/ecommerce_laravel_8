@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
 use App\Models\Review;
+use App\Models\VariantProduct;
 use Illuminate\Support\Facades\Hash;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Mail;
@@ -142,6 +143,7 @@ class CustomerController extends Controller
                 ],
             );
 
+            // create new order when submit request
             $order = Order::create([
                         'name'=>request()->name,
                         'email'=>request()->email,
@@ -151,6 +153,7 @@ class CustomerController extends Controller
                         'id_customer'=>request()->id_customer
                     ]);
 
+            // create new order detail from order
             foreach ($add_order_detail as $o_d) {
                 OrderDetail::create([
                     'id_order'=>$order->id,
@@ -159,9 +162,16 @@ class CustomerController extends Controller
                 	'quantity'=>$o_d->qty,
                 	'price'=>$o_d->price	
                 ]);
+                // update quantity variant product
+                $ud_vp = VariantProduct::find($o_d->id);
+                $quantity = $ud_vp->quantity - $o_d->qty;
+                $ud_vp->update([
+                    'quantity'=> $quantity
+                ]);
             }
+            
+            // send mail customer has been ordered
             if($order){
-
                 Mail::send('emails.order',[
                     'name_customer'=>request()->name,
                     'order_code'=>$order->id,

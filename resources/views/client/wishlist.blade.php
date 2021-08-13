@@ -54,33 +54,25 @@
                                         </tr>
                                     </thead> <!-- End Cart Table Head -->
                                     <tbody>
-                                        <!-- Start Wishlist Single Item-->
-                                        <tr>
-                                            <td class="product_remove"><a href="#"><i class="fa fa-trash-o"></i></a></td>
-                                            <td class="product_thumb"><a href="product-details-default.html"><img src="{{ url('public/client') }}/images/product/default/home-1/default-1.jpg" alt=""></a></td>
-                                            <td class="product_name"><a href="product-details-default.html">Handbag fringilla</a></td>
-                                            <td class="product-price">$65.00</td>
-                                            <td class="product_stock">In Stock</td>
-                                            <td class="product_addcart"><a href="#" class="btn btn-md btn-golden" data-bs-toggle="modal" data-bs-target="#modalAddcart">Add To Cart</a></td>
-                                        </tr> <!-- End Wishlist Single Item-->
-                                        <!-- Start Wishlist Single Item-->
-                                        <tr>
-                                            <td class="product_remove"><a href="#"><i class="fa fa-trash-o"></i></a></td>
-                                            <td class="product_thumb"><a href="product-details-default.html"><img src="{{ url('public/client') }}/images/product/default/home-1/default-2.jpg" alt=""></a></td>
-                                            <td class="product_name"><a href="product-details-default.html">Handbags justo</a></td>
-                                            <td class="product-price">$90.00</td>
-                                            <td class="product_stock">In Stock</td>
-                                            <td class="product_addcart"><a href="#" class="btn btn-md btn-golden" data-bs-toggle="modal" data-bs-target="#modalAddcart">Add To Cart</a></td>
-                                        </tr> <!-- End Wishlist Single Item-->
-                                        <!-- Start Wishlist Single Item-->
-                                        <tr>
-                                            <td class="product_remove"><a href="#"><i class="fa fa-trash-o"></i></a></td>
-                                            <td class="product_thumb"><a href="product-details-default.html"><img src="{{ url('public/client') }}/images/product/default/home-1/default-3.jpg" alt=""></a></td>
-                                            <td class="product_name"><a href="product-details-default.html">Handbag elit</a></td>
-                                            <td class="product-price">$80.00</td>
-                                            <td class="product_stock">In Stock</td>
-                                            <td class="product_addcart"><a href="#" class="btn btn-md btn-golden" data-bs-toggle="modal" data-bs-target="#modalAddcart">Add To Cart</a></td>
-                                        </tr> <!-- End Wishlist Single Item-->
+                                        @if (Session::has('wishlist'))
+                                            <?php  $data_wishlist = Session::get('wishlist');
+                                                // echo "<pre/>";
+                                                // var_dump($data_wishlist);
+                                            ?>
+                                            @foreach ($data_wishlist as $key=>$value)
+                                                @foreach ($value as $wl)
+                                                    <!-- Start Wishlist Single Item-->
+                                                    <tr>
+                                                        <td class="product_remove"><a href="{{route('client.destroyWishlist',['id_vp' => $wl['id_vp']])}}"><i class="fa fa-trash-o"></i></a></td>
+                                                        <td class="product_thumb"><a href=""><img src="{{ url('public/uploads/product',$wl['image']) }}" alt=""></a></td>
+                                                        <td class="product_name"><a href="">{{$wl['name']}}</a></td>
+                                                        <td class="product-price">${{$wl['price']}}</td>
+                                                        <td class="product_stock">In Stock</td>
+                                                        <td class="product_addcart"><a href="#" class="btn btn-md btn-golden">Add To Cart</a></td>
+                                                    </tr> <!-- End Wishlist Single Item-->        
+                                                @endforeach
+                                            @endforeach
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>

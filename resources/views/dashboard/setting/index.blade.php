@@ -3,7 +3,7 @@
 
 {{-- define item for master layout --}}
 @section('title', 'Dashboard Admin')
-@section('directory', 'Order')
+@section('directory', 'Setting Link')
 @section('action', 'Index')
 
 
@@ -16,15 +16,15 @@
                 {{-- card hearder --}}
                 <div class="card-header">
 
-                    {{-- header Order --}}
+                    {{-- header Setting Link --}}
                     <div class="row justify-content-between">
                         <div class="col-4">
-                            <h4>Order Management</h4>
+                            <h4>Setting Link Management</h4>
                         </div>
                         <div class="col-4 d-flex justify-content-end">
-                            <a href="{{ route('order.create') }}" class="btn btn-outline-dark">
+                            <a href="{{ route('settingLink.create') }}" class="btn btn-outline-dark">
                                 <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                                <span>Add order</span>
+                                <span>Add Setting Link</span>
                             </a>
                         </div>
                     </div>
@@ -66,47 +66,29 @@
                     <table class="table table-striped table-bordered table-hover text-center">
                         <thead class="">
                             <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Address</th>
+                                <th>ID</th>
+                                <th>Name Setting Link</th>
+                                <th>Total Product</th>
                                 <th>Create Date</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($data_customer as $cus)
+                            @foreach ($data_st as $st_link)
                                 <tr>
-                                    <form action="{{route('cusMan.update',$cus->id)}}" method="post">
-                                    @csrf @method('PUT')
-                                        <td scope="row">
-                                            <input type="hidden" name="name" value="{{$cus->name}}">
-                                            {{ $cus->name }}
-                                        </td>
-                                        <td>
-                                            <input type="hidden" name="email" value="{{$cus->email}}">
-                                            {{ $cus->email }}
-                                        </td>
-                                        <td>
-                                            <input type="hidden" name="phone" value="{{$cus->phone}}">
-                                            {{ $cus->phone }}
-                                        </td>
-                                        <td>
-                                            <input type="hidden" name="address" value="{{$cus->address}}">
-                                            {{ $cus->address }}
-                                        </td>
-                                        <td>{{ $cus->created_at->format('d-m-Y') }}</td>
-                                        <td>
-
-                                            <button type="submit" class="btn btn-success btnUpdate">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <a href="{{ route('cusMan.destroy', $cus->id) }}"
-                                                class="btn btn-danger btnDelete">
-                                                <i class="fa fa-trash" aria-hidden="true"></i>
-                                            </a>
-                                        </td>
-                                    </form>
+                                    <td scope="row">{{ $st_link->id }}</td>
+                                    <td>{{ $st_link->config_key }}</td>
+                                    <td>{{ $st_link->config_value }}</td>
+                                    <td>{{ $st_link->created_at->format('d-m-Y') }}</td>
+                                    <td>
+                                        <a href="{{ route('settingLink.edit', $st_link->id) }}" class="btn btn-info">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="{{ route('settingLink.destroy', $st_link->id) }}"
+                                            class="btn btn-danger btnDelete">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </a>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -115,10 +97,10 @@
                 <div class="card-footer text-muted">
                     <div class="row">
                         <div class="col-5">
-                            <h6>Showing 1 to 10 of {{ $data_customer->count() }} entries</h6>
+                            <h6>Showing 1 to 10 of {{ $data_st->count() }} entries</h6>
                         </div>
                         <div class="col-7">
-                            {{ $data_customer->appends(request()->all())->links() }}
+                            {{ $data_st->appends(request()->all())->links() }}
                         </div>
                     </div>
                 </div>
@@ -130,7 +112,6 @@
     <form action="" method="post" id="formAction">
         @csrf @method('DELETE')
     </form>
-     
 @stop
 
 {{-- customize load css and js for master layout --}}
@@ -157,27 +138,6 @@
             }).then((result) => {
 
                 if (result.isConfirmed) {
-                    // var myPromise = () => {
-                    //     return new Promise((resolve, reject) => {
-                    //         $('form#formAction').submit();
-                    //         resolve();
-                    //     });
-                    // };
-
-                    // myPromise()
-                    //     .then(() => {
-                    @if (Session::has('result'))
-                        // var rel = @json(Session::get('result'));
-                        // Swal.fire(
-                        // rel[0],
-                        // rel[1],
-                        // rel[2]
-                        // );
-                    // @else
-                    
-                        // @endif
-
-                    //     });
                     $('form#formAction').submit();
                     Swal.fire(
                         'Deleting',
@@ -189,7 +149,7 @@
             });
         });
 
-        // show number column order
+        // show number column category
         $('#show').change(function (e) { 
             e.preventDefault();
             var _select = $('select#show').val();

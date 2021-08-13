@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th8 03, 2021 lúc 06:24 AM
+-- Thời gian đã tạo: Th8 12, 2021 lúc 06:02 PM
 -- Phiên bản máy phục vụ: 10.4.17-MariaDB
 -- Phiên bản PHP: 7.4.15
 
@@ -44,7 +44,29 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`id`, `name`, `email`, `email_verified_at`, `password`, `role`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'MC Wai', 'dovanvinhwao@gmail.com', NULL, '$2y$10$sVv.szO5/dnP2VJB4kn6G.r9mg6k.ytv9MVJN/PmiTfVvxjOq8z0a', 0, '4e7PGvkLzVTwZKmYcDhuzXeXPtuO4mTUzfjwnuOmY07wPctYQZHxpnioZsyt', '2021-07-21 21:24:36', '2021-07-21 21:24:36');
+(1, 'MC Wai', 'dovanvinhwao@gmail.com', NULL, '$2y$10$sVv.szO5/dnP2VJB4kn6G.r9mg6k.ytv9MVJN/PmiTfVvxjOq8z0a', 0, 'huRbCHuAeKPe0oJJrzrlbxIqR5hJYq0IFXwuxHjsifcwIqYBcokBfozMez6Y', '2021-07-21 21:24:36', '2021-07-21 21:24:36'),
+(2, 'do van vinh', 'vinhdvpd04097@fpt.edu.vn', NULL, '$2y$10$GEqSQUrB4gYjD0PD5nCLDuVa30ALsgS53zu/elYlTwfsBJnrqIIqq', 0, NULL, '2021-08-11 21:45:04', '2021-08-11 21:45:04');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `admin_role`
+--
+
+CREATE TABLE `admin_role` (
+  `admin_id` int(10) UNSIGNED NOT NULL,
+  `role_id` int(10) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `admin_role`
+--
+
+INSERT INTO `admin_role` (`admin_id`, `role_id`, `created_at`, `updated_at`) VALUES
+(1, 2, '2021-08-12 08:27:41', '2021-08-12 08:27:41'),
+(2, 3, '2021-08-12 08:44:00', '2021-08-12 08:44:00');
 
 -- --------------------------------------------------------
 
@@ -95,7 +117,8 @@ INSERT INTO `category` (`id`, `name`, `parent_id`, `slug`, `created_at`, `update
 (2, 'iPad', 0, 'ipad', '2021-07-21 21:50:59', '2021-07-21 21:50:59'),
 (3, 'iPhone', 0, 'iphone', '2021-07-21 21:51:07', '2021-07-21 21:51:07'),
 (4, 'Music', 0, 'music', '2021-07-21 21:51:19', '2021-07-21 21:51:19'),
-(5, 'Watch', 0, 'watch', '2021-07-21 21:51:22', '2021-07-21 21:51:22');
+(5, 'Watch', 0, 'watch', '2021-07-21 21:51:22', '2021-07-21 21:51:22'),
+(7, 'test', 5, 'test', '2021-08-12 08:07:47', '2021-08-12 08:07:47');
 
 -- --------------------------------------------------------
 
@@ -167,7 +190,10 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (18, '2021_07_28_022140_create_customer_table', 2),
 (21, '2021_07_28_132641_create_order_table', 3),
 (22, '2021_07_28_133242_create_order_detail_table', 3),
-(24, '2021_08_01_132349_create_review_table', 4);
+(24, '2021_08_01_132349_create_review_table', 4),
+(25, '2021_08_04_143615_create_setting_link_table', 5),
+(26, '2021_08_11_081315_create_role_table', 6),
+(27, '2021_08_11_081402_create_admin_role_table', 6);
 
 -- --------------------------------------------------------
 
@@ -309,6 +335,51 @@ INSERT INTO `review` (`id`, `id_customer`, `id_product`, `comment`, `rating_star
 -- --------------------------------------------------------
 
 --
+-- Cấu trúc bảng cho bảng `role`
+--
+
+CREATE TABLE `role` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `permission` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `role`
+--
+
+INSERT INTO `role` (`id`, `name`, `permission`, `created_at`, `updated_at`) VALUES
+(2, 'Administration', '[\"admin.index\",\"admin.create\",\"admin.store\",\"admin.show\",\"admin.edit\",\"admin.update\",\"admin.destroy\",\"category.index\",\"category.create\",\"category.store\",\"category.show\",\"category.edit\",\"category.update\",\"category.destroy\",\"product.index\",\"product.create\",\"product.store\",\"product.show\",\"product.edit\",\"product.update\",\"product.destroy\",\"variantProduct.index\",\"variantProduct.create\",\"variantProduct.store\",\"variantProduct.show\",\"variantProduct.edit\",\"variantProduct.update\",\"variantProduct.destroy\",\"banner.index\",\"banner.create\",\"banner.store\",\"banner.show\",\"banner.edit\",\"banner.update\",\"banner.destroy\",\"order.index\",\"order.create\",\"order.store\",\"order.show\",\"order.edit\",\"order.update\",\"order.destroy\",\"cusMan.index\",\"cusMan.create\",\"cusMan.store\",\"cusMan.show\",\"cusMan.edit\",\"cusMan.update\",\"cusMan.destroy\",\"review.index\",\"review.create\",\"review.store\",\"review.show\",\"review.edit\",\"review.update\",\"review.destroy\",\"settingLink.index\",\"settingLink.create\",\"settingLink.store\",\"settingLink.show\",\"settingLink.edit\",\"settingLink.update\",\"settingLink.destroy\",\"role.index\",\"role.create\",\"role.store\",\"role.show\",\"role.edit\",\"role.update\",\"role.destroy\",\"decentralize.index\",\"decentralize.create\",\"decentralize.store\",\"decentralize.show\",\"decentralize.edit\",\"decentralize.update\",\"decentralize.destroy\"]', '2021-08-12 01:41:12', '2021-08-12 01:41:12'),
+(3, 'Collaborators', '[\"admin.index\",\"admin.create\",\"admin.store\",\"admin.show\",\"admin.edit\",\"admin.update\",\"admin.destroy\",\"category.index\",\"category.create\",\"category.store\",\"category.show\",\"category.edit\",\"category.update\",\"category.destroy\",\"product.index\",\"product.create\",\"product.store\",\"product.show\",\"product.edit\",\"product.update\",\"product.destroy\"]', '2021-08-12 01:41:56', '2021-08-12 08:46:35');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `setting_link`
+--
+
+CREATE TABLE `setting_link` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `config_key` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `config_value` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `setting_link`
+--
+
+INSERT INTO `setting_link` (`id`, `config_key`, `config_value`, `created_at`, `updated_at`) VALUES
+(1, 'Github', 'https://github.com/WAIMC', '2021-08-04 08:00:38', '2021-08-04 08:00:38'),
+(2, 'Facebook', 'https://www.facebook.com/dovanvinhwao/', '2021-08-04 08:01:21', '2021-08-04 08:01:21'),
+(3, 'Linkedin', 'https://www.linkedin.com/in/vinh-%C4%91%E1%BB%97-v%C4%83n-838481217/', '2021-08-04 08:02:25', '2021-08-04 08:02:25');
+
+-- --------------------------------------------------------
+
+--
 -- Cấu trúc bảng cho bảng `users`
 --
 
@@ -392,6 +463,13 @@ ALTER TABLE `admin`
   ADD UNIQUE KEY `admin_email_unique` (`email`);
 
 --
+-- Chỉ mục cho bảng `admin_role`
+--
+ALTER TABLE `admin_role`
+  ADD PRIMARY KEY (`admin_id`,`role_id`),
+  ADD KEY `admin_role_role_id_foreign` (`role_id`);
+
+--
 -- Chỉ mục cho bảng `banner`
 --
 ALTER TABLE `banner`
@@ -460,6 +538,19 @@ ALTER TABLE `review`
   ADD KEY `review_id_product_foreign` (`id_product`);
 
 --
+-- Chỉ mục cho bảng `role`
+--
+ALTER TABLE `role`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `role_name_unique` (`name`);
+
+--
+-- Chỉ mục cho bảng `setting_link`
+--
+ALTER TABLE `setting_link`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Chỉ mục cho bảng `users`
 --
 ALTER TABLE `users`
@@ -481,7 +572,7 @@ ALTER TABLE `variant_product`
 -- AUTO_INCREMENT cho bảng `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT cho bảng `banner`
@@ -493,7 +584,7 @@ ALTER TABLE `banner`
 -- AUTO_INCREMENT cho bảng `category`
 --
 ALTER TABLE `category`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT cho bảng `customer`
@@ -511,7 +602,7 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT cho bảng `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT cho bảng `order`
@@ -538,6 +629,18 @@ ALTER TABLE `review`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT cho bảng `role`
+--
+ALTER TABLE `role`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT cho bảng `setting_link`
+--
+ALTER TABLE `setting_link`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
@@ -552,6 +655,13 @@ ALTER TABLE `variant_product`
 --
 -- Các ràng buộc cho các bảng đã đổ
 --
+
+--
+-- Các ràng buộc cho bảng `admin_role`
+--
+ALTER TABLE `admin_role`
+  ADD CONSTRAINT `admin_role_admin_id_foreign` FOREIGN KEY (`admin_id`) REFERENCES `admin` (`id`),
+  ADD CONSTRAINT `admin_role_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`);
 
 --
 -- Các ràng buộc cho bảng `order`

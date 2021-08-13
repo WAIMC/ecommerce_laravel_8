@@ -31,7 +31,6 @@ class CategoryController extends Controller
     {
         $show_option = $this->categoryRecursive($id=0);
         return view('dashboard.category.create',compact('show_option'));
-        // dd($show_option);
     }
 
     /* 

@@ -91,12 +91,10 @@
                                                         $subtotal=0;
                                                         $subquantity=0;
                                                     ?>
-                                                    @foreach ($data_detail as $key=>$total)
+                                                    @foreach ($order->order_orderDetail()->get() as $key=>$total)
                                                         <?php 
-                                                            foreach ($total as $key => $value) {
-                                                                $subtotal += $value->price*$value->quantity;
-                                                                $subquantity +=$value->quantity;
-                                                            }
+                                                            $subtotal += $total->price*$total->quantity;
+                                                            $subquantity +=$total->quantity;
                                                          ?>
                                                     @endforeach
                                                     <td>${{$subtotal}} for {{$subquantity}} item </td>
@@ -200,14 +198,12 @@
                                            </tr> 
                                        </thead>
                                        <tbody>
-                                        @foreach ($data_detail as $key=>$detail)
-                                            @foreach ($detail as $it_detail)
-                                                <tr>
-                                                    <td scope="row">{{$it_detail->name}}</td>
-                                                    <td> x {{$it_detail->quantity}}</td>
-                                                    <td> ${{$it_detail->price}}</td>
-                                                </tr>
-                                            @endforeach
+                                        @foreach ($modal_id->order_orderDetail()->get() as $key=>$detail)
+                                            <tr>
+                                                <td scope="row">{{$detail->name}}</td>
+                                                <td> x {{$detail->quantity}}</td>
+                                                <td> ${{$detail->price}}</td>
+                                            </tr>
                                         @endforeach
                                        </tbody>
                                    </table>

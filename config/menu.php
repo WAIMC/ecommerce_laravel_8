@@ -6,6 +6,35 @@
             'icon' => 'fa-home'
         ],
         [
+            'label'=>'Decentralize Management',
+            'route'=>'decentralize.index',
+            'icon'=>'fa-address-card',
+            'items'=>[
+                [
+                    'label'=>'List Decentralize',
+                    'route'=>'decentralize.index',
+                    'icon'=>'fa-circle nav-icon'
+                ],
+            ]
+        ],
+        [
+            'label'=>'Roles Management',
+            'route'=>'role.index',
+            'icon'=>'fa-shield-alt',
+            'items'=>[
+                [
+                    'label'=>'List Roles',
+                    'route'=>'role.index',
+                    'icon'=>'fa-circle nav-icon'
+                ],
+                [
+                    'label'=>'Add Roles',
+                    'route'=>'role.create',
+                    'icon'=>'fa-circle nav-icon'
+                ]
+            ]
+        ],
+        [
             'label'=>'Category Management',
             'route'=>'category.index',
             'icon'=>'fa-list-alt',
@@ -99,12 +128,29 @@
         ],
         [
             'label'=>'Customer Management',
-            'route'=>'customer_management.index',
+            'route'=>'cusMan.index',
             'icon'=>'fa-users',
             'items'=>[
                 [
                     'label'=>'List Customer',
-                    'route'=>'customer_management.index',
+                    'route'=>'cusMan.index',
+                    'icon'=>'fa-circle nav-icon'
+                ]
+            ]
+        ],
+        [
+            'label'=>'Setting Link Management',
+            'route'=>'settingLink.index',
+            'icon'=>'fa-cogs',
+            'items'=>[
+                [
+                    'label'=>'List Setting Link',
+                    'route'=>'settingLink.index',
+                    'icon'=>'fa-circle nav-icon'
+                ],
+                [
+                    'label'=>'Add Setting Link',
+                    'route'=>'settingLink.create',
                     'icon'=>'fa-circle nav-icon'
                 ]
             ]

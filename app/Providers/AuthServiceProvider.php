@@ -2,8 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\Admin;
+use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Gate;
+// use Illuminate\Support\Facades\Gate;
+use Illuminate\Contracts\Auth\Access\Gate;
+use Illuminate\Contracts\Auth\Access\Authorizable;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -25,6 +29,11 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        app(Gate::class)->before(function(Authorizable $auth, $route){
+            if(method_exists($auth,'hasPermission')){
+                return $auth->hasPermission($route) ? $auth->hasPermission($route) : false;
+            }
+            return false;
+        });
     }
 }

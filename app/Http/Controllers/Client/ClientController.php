@@ -60,11 +60,61 @@ class ClientController extends Controller
         return view('client.shop',compact('category','product','data_product'));
     }
 
-    public function wishlist()
+    public function wishlist(Request $request)
     {
         // get all product (add name of model quick view or add to card )
         $product = Product::all();
         return view('client.wishlist',compact('product'));
+    }
+
+    public function storeWishlist(Request $request)
+    {
+        if($request->session()->has('wishlist')){
+            $data_wishlist = $request->session()->get('wishlist', 'default');
+            foreach ($data_wishlist as $key => $value) {
+                foreach ($value as $dl_wl) {
+                    if($dl_wl['id_vp'] !== $request->id_variant_product){
+                        $arr_wishlist = [
+                            [
+                                'id_vp' => request()->id_variant_product,
+                                'name' => request()->name,
+                                'price' => request()->price,
+                                'color' => request()->color,
+                                'image' => request()->image
+                            ],
+                        ];
+                    }
+                } 
+            }
+        }else{
+            $arr_wishlist = [
+                [
+                    'id_vp' => request()->id_variant_product,
+                    'name' => request()->name,
+                    'price' => request()->price,
+                    'color' => request()->color,
+                    'image' => request()->image
+                ],
+            ];
+        }
+        
+        $request->session()->push('wishlist', $arr_wishlist);
+        
+        return redirect()->back();
+    }
+
+    public function destroyWishlist(Request $request)
+    {
+        $dt_wishlist = $request->session()->get('wishlist');
+        foreach ($dt_wishlist as $key => $value) {
+            foreach ($value as $dl_wl) {
+                if($dl_wl['id_vp'] == $request->id_vp){
+                    unset($dt_wishlist[$key]);
+                    $request->session()->put('wishlist',$dt_wishlist);
+                }
+            } 
+        }
+        return redirect()->back();
     }
 
     public function checkout()
@@ -111,7 +161,7 @@ class ClientController extends Controller
        ], function($mail) use($request) {
         $mail->to('dovanvinhwao@gmail.com', $request->name);
         $mail->from($request->email);
-        $mail->subject('test mail');
+        $mail->subject($request->subject);
        });
        return redirect()->back()->with('contact','Thank you has feed back .');
     }

@@ -153,9 +153,9 @@
                                 </div>
                                 <!-- Start  Product Details Meta Area-->
                                 <div class="product-details-meta mb-20">
-                                    <a href="wishlist.html" class="icon-space-right"><i class="icon-heart"></i>Add to
+                                    <a href="" class="icon-space-right"><i class="icon-heart"></i>Add to
                                         wishlist</a>
-                                    <a href="compare.html" class="icon-space-right"><i class="icon-refresh"></i>Compare</a>
+                                    <a href="" class="icon-space-right"><i class="icon-refresh"></i>Compare</a>
                                 </div> <!-- End  Product Details Meta Area-->
                             </div> <!-- End Product Variable Area -->
 
@@ -436,8 +436,8 @@
                                                         <a href="#" data-bs-toggle="modal"
                                                             data-bs-target="#modalQuickview_{{ $related_pd->id }}"><i
                                                                 class="icon-magnifier"></i></a>
-                                                        <a href="wishlist.html"><i class="icon-heart"></i></a>
-                                                        <a href="compare.html"><i class="icon-shuffle"></i></a>
+                                                        <a href="{{route('client.storeWishlist',['id_variant_product'=>$add_c->id, 'name'=>$related_pd->name, 'price'=>$add_c->discount, 'color'=>$add_c->color, 'image'=>$related_pd->image])}}"><i class="icon-heart"></i></a>
+                                                        <a href=""><i class="icon-shuffle"></i></a>
                                                     </div>
                                                 </div>
                                             </div>

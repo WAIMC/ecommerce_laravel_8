@@ -3,7 +3,7 @@
 
 {{-- define item for master layout --}}
 @section('title', 'Dashboard Admin')
-@section('directory', 'Order')
+@section('directory', 'Decentralize')
 @section('action', 'Index')
 
 
@@ -16,16 +16,10 @@
                 {{-- card hearder --}}
                 <div class="card-header">
 
-                    {{-- header Order --}}
+                    {{-- header Decentralize --}}
                     <div class="row justify-content-between">
                         <div class="col-4">
-                            <h4>Order Management</h4>
-                        </div>
-                        <div class="col-4 d-flex justify-content-end">
-                            <a href="{{ route('order.create') }}" class="btn btn-outline-dark">
-                                <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                                <span>Add order</span>
-                            </a>
+                            <h4>Decentralize Management</h4>
                         </div>
                     </div>
 
@@ -66,47 +60,39 @@
                     <table class="table table-striped table-bordered table-hover text-center">
                         <thead class="">
                             <tr>
+                                <th>ID</th>
                                 <th>Name</th>
                                 <th>Email</th>
-                                <th>Phone</th>
-                                <th>Address</th>
+                                <th>Role</th>
                                 <th>Create Date</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($data_customer as $cus)
+                            @foreach ($data_decentralize as $decentralize)
                                 <tr>
-                                    <form action="{{route('cusMan.update',$cus->id)}}" method="post">
-                                    @csrf @method('PUT')
-                                        <td scope="row">
-                                            <input type="hidden" name="name" value="{{$cus->name}}">
-                                            {{ $cus->name }}
-                                        </td>
-                                        <td>
-                                            <input type="hidden" name="email" value="{{$cus->email}}">
-                                            {{ $cus->email }}
-                                        </td>
-                                        <td>
-                                            <input type="hidden" name="phone" value="{{$cus->phone}}">
-                                            {{ $cus->phone }}
-                                        </td>
-                                        <td>
-                                            <input type="hidden" name="address" value="{{$cus->address}}">
-                                            {{ $cus->address }}
-                                        </td>
-                                        <td>{{ $cus->created_at->format('d-m-Y') }}</td>
-                                        <td>
-
-                                            <button type="submit" class="btn btn-success btnUpdate">
-                                                <i class="fas fa-edit"></i>
-                                            </button>
-                                            <a href="{{ route('cusMan.destroy', $cus->id) }}"
-                                                class="btn btn-danger btnDelete">
-                                                <i class="fa fa-trash" aria-hidden="true"></i>
-                                            </a>
-                                        </td>
-                                    </form>
+                                    <td scope="row">{{ $decentralize->id }}</td>
+                                    <td>{{ $decentralize->name }}</td>
+                                    <td>{{ $decentralize->email }}</td>
+                                    <?php  $getRole = ''; ?>
+                                    @if ($decentralize->getRoles()->count()>0)
+                                        @foreach ($decentralize->getRoles()->get() as $role)
+                                            <?php
+                                                $getRole .= "| ".$role->name." |";
+                                            ?>
+                                        @endforeach
+                                    @endif
+                                    <td><span class="text-success">{{$getRole}}</span></td>
+                                    <td>{{ $decentralize->created_at->format('d-m-Y') }}</td>
+                                    <td>
+                                        <a href="{{ route('decentralize.edit', [$decentralize->id,'id'=>$decentralize->id]) }}" class="btn btn-info">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="{{ route('decentralize.destroy', $decentralize->id) }}"
+                                            class="btn btn-danger btnDelete">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </a>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -115,10 +101,10 @@
                 <div class="card-footer text-muted">
                     <div class="row">
                         <div class="col-5">
-                            <h6>Showing 1 to 10 of {{ $data_customer->count() }} entries</h6>
+                            <h6>Showing 1 to 10 of {{ $data_decentralize->count() }} entries</h6>
                         </div>
                         <div class="col-7">
-                            {{ $data_customer->appends(request()->all())->links() }}
+                            {{ $data_decentralize->appends(request()->all())->links() }}
                         </div>
                     </div>
                 </div>
@@ -130,7 +116,6 @@
     <form action="" method="post" id="formAction">
         @csrf @method('DELETE')
     </form>
-     
 @stop
 
 {{-- customize load css and js for master layout --}}
@@ -157,27 +142,6 @@
             }).then((result) => {
 
                 if (result.isConfirmed) {
-                    // var myPromise = () => {
-                    //     return new Promise((resolve, reject) => {
-                    //         $('form#formAction').submit();
-                    //         resolve();
-                    //     });
-                    // };
-
-                    // myPromise()
-                    //     .then(() => {
-                    @if (Session::has('result'))
-                        // var rel = @json(Session::get('result'));
-                        // Swal.fire(
-                        // rel[0],
-                        // rel[1],
-                        // rel[2]
-                        // );
-                    // @else
-                    
-                        // @endif
-
-                    //     });
                     $('form#formAction').submit();
                     Swal.fire(
                         'Deleting',
@@ -189,7 +153,7 @@
             });
         });
 
-        // show number column order
+        // show number column decentralize
         $('#show').change(function (e) { 
             e.preventDefault();
             var _select = $('select#show').val();

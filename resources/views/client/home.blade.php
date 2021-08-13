@@ -31,7 +31,7 @@
                                         <div class="hero-slider-content">
                                             <h4 class="subtitle">{{ $sli->subtitle }}</h4>
                                             <h1 class="title">{{ $sli->title_first }} <br> {{ $sli->title_second }} </h1>
-                                            <a href="" class="btn btn-lg btn-pink">shop now </a>
+                                            <a href="{{route('client.shop')}}" class="btn btn-lg btn-pink">shop now </a>
                                         </div>
                                     </div>
                                 </div>
@@ -210,7 +210,9 @@
                                                             <a href="#" data-bs-toggle="modal" data-bs-target="#modalQuickview_{{$np->id}}">
                                                                 <i class="icon-magnifier"></i>
                                                             </a>
-                                                            <a href=""><i class="icon-heart"></i></a>
+                                                            <a href="{{route('client.storeWishlist',['id_variant_product'=>$vpr->id, 'name'=>$np->name, 'price'=>$vpr->discount, 'color'=>$vpr->color, 'image'=>$np->image])}}">
+                                                                <i class="icon-heart"></i>
+                                                            </a>
                                                             <a href=""><i class="icon-shuffle"></i></a>
                                                         </div>
                                                     </div>
@@ -311,10 +313,9 @@
                                     {{-- do everything looklike show product above, but name variable different --}}
                                     @foreach ($new_product as $np_sl)
                                         <?php
-                                            $variantProductPresentative = $np_sl->product_variantProduct()->where('status',0)->select('price','discount')->get();
+                                            $variantProductPresentative = $np_sl->product_variantProduct()->where('status',0)->get();
                                         ?>
                                         @foreach ($variantProductPresentative  as $vp_s)
-                                            
                                             <!-- Start Product Default Single Item -->
                                             <div class="product-default-single-item product-color--pink swiper-slide">
                                                 <div class="image-box">
@@ -330,7 +331,7 @@
                                                         <div class="action-link-right">
                                                             <a href="#" data-bs-toggle="modal" data-bs-target="#modalQuickview_{{$np_sl->id}}"><i
                                                                     class="icon-magnifier"></i></a>
-                                                            <a href=""><i class="icon-heart"></i></a>
+                                                            <a href="{{route('client.storeWishlist',['id_variant_product'=>$vp_s->id, 'name'=>$np_sl->name, 'price'=>$vp_s->discount, 'color'=>$vp_s->color, 'image'=>$np_sl->image])}}"><i class="icon-heart"></i></a>
                                                             <a href=""><i class="icon-shuffle"></i></a>
                                                         </div>
                                                     </div>
