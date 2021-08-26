@@ -102,6 +102,24 @@
                                                         <label for="filter_chart_by_date{{$route}}" class="custom-control-label">Filter Chart {{$route}}</label>
                                                     </div>
                                                 </div>
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input class="custom-control-input checkbox-children check_{{$route}}" type="checkbox" id="login{{$route}}" name="routes[]" value="{{$route}}.login">
+                                                        <label for="login{{$route}}" class="custom-control-label">Login {{$route}}</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input class="custom-control-input checkbox-children check_{{$route}}" type="checkbox" id="register{{$route}}" name="routes[]" value="{{$route}}.register">
+                                                        <label for="register{{$route}}" class="custom-control-label">Register {{$route}}</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input class="custom-control-input checkbox-children check_{{$route}}" type="checkbox" id="logout{{$route}}" name="routes[]" value="{{$route}}.logout">
+                                                        <label for="logout{{$route}}" class="custom-control-label">Logout {{$route}}</label>
+                                                    </div>
+                                                </div>
                                             @endif
                                         </div>
                                         <div class="card-footer text-muted">

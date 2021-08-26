@@ -134,149 +134,40 @@
                 <div class="col-lg-9">
                     <div class="blog-wrapper">
                         <div class="row mb-n6">
-                            <div class="col-md-6 col-12 mb-6">
-                                <!-- Start Product Default Single Item -->
-                                <div class="blog-list blog-grid-single-item blog-color--golden"  data-aos="fade-up"  data-aos-delay="0">
-                                    <div class="image-box">
-                                        <a href="blog-single-sidebar-left.html" class="image-link">
-                                            <img class="img-fluid" src="{{ url('public/client') }}/images/blog/blog-grid-home-1-img-1.jpg" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="content">
-                                        <ul class="post-meta">
-                                           <li>POSTED BY : <a href="#" class="author">Admin</a></li> 
-                                           <li>ON : <a href="#" class="date">APRIL 24, 2018</a></li> 
-                                        </ul>
-                                        <h6 class="title"><a href="blog-single-sidebar-left.html"> Blog image post</a></h6>
-                                        <p>Donec vitae hendrerit arcu, sit amet faucibus nisl. Cras pretium arcu ex. Aenean posuere libero eu augue condimentum rhoncus. Praesent</p>
-                                        <a href="#" class="read-more-btn icon-space-left">Read More <span class="icon"><i class="ion-ios-arrow-thin-right"></i></span></a>
-                                    </div>
-                                </div>
-                                <!-- End Product Default Single Item -->
-                            </div>
-                            <div class="col-md-6 col-12 mb-6">
-                                <!-- Start Product Default Single Item -->
-                                <div class="blog-list blog-grid-single-item blog-color--golden"  data-aos="fade-up"  data-aos-delay="200">
-                                    <div class="blog-list-slider-arrow">
-                                        <!-- Slider main container -->
-                                        <div class="blog-list-slider swiper-container">
-                                            <!-- Additional required wrapper -->
-                                            <div class="swiper-wrapper">
-                                                <!-- Slides -->
-                                                <div class="blog-list-slider-img swiper-slide"><img class="img-fluid"  src="{{ url('public/client') }}/images/blog/blog-grid-home-1-img-4.jpg" alt=""></div>
-                                                <div class="blog-list-slider-img swiper-slide"><img class="img-fluid"  src="{{ url('public/client') }}/images/blog/blog-grid-home-1-img-2.jpg" alt=""></div>
-                                                <div class="blog-list-slider-img swiper-slide"><img class="img-fluid"  src="{{ url('public/client') }}/images/blog/blog-grid-home-1-img-3.jpg" alt=""></div>
-                                                <div class="blog-list-slider-img swiper-slide"><img class="img-fluid"  src="{{ url('public/client') }}/images/blog/blog-grid-home-1-img-1.jpg" alt=""></div>
-                                                <div class="blog-list-slider-img swiper-slide"><img class="img-fluid"  src="{{ url('public/client') }}/images/blog/blog-grid-home-1-img-5.jpg" alt=""></div>
-                                            </div>
-
-                                            <!-- If we need navigation buttons -->
-                                            <div class="swiper-button-prev"></div>
-                                            <div class="swiper-button-next"></div>
+                            @foreach ($blog as $item_blog)
+                                <div class="col-md-6 col-12 mb-6">
+                                    <!-- Start Product Default Single Item -->
+                                    <div class="blog-list blog-grid-single-item blog-color--golden"  data-aos="fade-up"  data-aos-delay="0">
+                                        <div class="image-box">
+                                            <a href="{{route('client.blog_detail', $item_blog->id)}}" class="image-link">
+                                                <img class="img-fluid" src="{{ url('public/uploads/product/'. $item_blog->image) }}" alt="">
+                                            </a>
+                                        </div>
+                                        <div class="content">
+                                            <ul class="post-meta">
+                                            <li>POSTED BY : <a href="#" class="author"> {{$item_blog->author}} </a></li> 
+                                            <li>ON : <a href="#" class="date"> {{$item_blog->created_at->format('Y-m-d')}} </a></li> 
+                                            </ul>
+                                            <h6 class="title"><a href="{{route('client.blog_detail', $item_blog->id)}}"> {{$item_blog->title}} </a></h6>
+                                            <p> {!! $item_blog->short_description !!} </p>
+                                            <a href="#" class="read-more-btn icon-space-left">Read More <span class="icon"><i class="ion-ios-arrow-thin-right"></i></span></a>
                                         </div>
                                     </div>
-                                    <div class="content">
-                                        <ul class="post-meta">
-                                           <li>POSTED BY : <a href="#" class="author">Admin</a></li> 
-                                           <li>ON : <a href="#" class="date">APRIL 24, 2018</a></li> 
-                                        </ul>
-                                        <h6 class="title"><a href="blog-single-sidebar-left.html"> Blog Slider post</a></h6>
-                                        <p>Donec vitae hendrerit arcu, sit amet faucibus nisl. Cras pretium arcu ex. Aenean posuere libero eu augue condimentum rhoncus. Praesent</p>
-                                        <a href="#" class="read-more-btn icon-space-left">Read More <span class="icon"><i class="ion-ios-arrow-thin-right"></i></span></a>
-                                    </div>
+                                    <!-- End Product Default Single Item -->
                                 </div>
-                                <!-- End Product Default Single Item -->
-                            </div>
-                            <div class="col-md-6 col-12 mb-6">
-                                <!-- Start Product Default Single Item -->
-                                <div class="blog-list blog-grid-single-item blog-color--golden"  data-aos="fade-up"  data-aos-delay="0">
-                                    <div class="blog-video-box">
-                                        <img class="img-fluid" src="{{ url('public/client') }}/images/blog/blog-grid-home-1-img-5.jpg" alt="">
-                                        <a href="https://youtu.be/MKjhBO2xQzg" class="video-play-btn" data-autoplay="true" data-vbtype="video">
-                                            <i class="fa fa-youtube-play"></i>
-                                        </a>  
-                                    </div>
-                                    <div class="content">
-                                        <ul class="post-meta">
-                                           <li>POSTED BY : <a href="#" class="author">Admin</a></li> 
-                                           <li>ON : <a href="#" class="date">APRIL 24, 2018</a></li> 
-                                        </ul>
-                                        <h6 class="title"><a href="blog-single-sidebar-left.html"> Blog video post</a></h6>
-                                        <p>Donec vitae hendrerit arcu, sit amet faucibus nisl. Cras pretium arcu ex. Aenean posuere libero eu augue condimentum rhoncus. Praesent</p>
-                                        <a href="#" class="read-more-btn icon-space-left">Read More <span class="icon"><i class="ion-ios-arrow-thin-right"></i></span></a>
-                                    </div>
-                                </div>
-                                <!-- End Product Default Single Item -->
-                            </div>
-                            <div class="col-md-6 col-12 mb-6">
-                                <!-- Start Product Default Single Item -->
-                                <div class="blog-list blog-grid-single-item blog-color--golden"  data-aos="fade-up"  data-aos-delay="200">
-                                    <div class="image-box">
-                                        <a href="blog-single-sidebar-left.html" class="image-link">
-                                            <img class="img-fluid" src="{{ url('public/client') }}/images/blog/blog-grid-home-1-img-2.jpg" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="content">
-                                        <ul class="post-meta">
-                                           <li>POSTED BY : <a href="#" class="author">Admin</a></li> 
-                                           <li>ON : <a href="#" class="date">APRIL 24, 2018</a></li> 
-                                        </ul>
-                                        <h6 class="title"><a href="blog-single-sidebar-left.html"> Blog image post</a></h6>
-                                        <p>Donec vitae hendrerit arcu, sit amet faucibus nisl. Cras pretium arcu ex. Aenean posuere libero eu augue condimentum rhoncus. Praesent</p>
-                                        <a href="#" class="read-more-btn icon-space-left">Read More <span class="icon"><i class="ion-ios-arrow-thin-right"></i></span></a>
-                                    </div>
-                                </div>
-                                <!-- End Product Default Single Item -->
-                            </div>
-                            <div class="col-md-6 col-12 mb-6">
-                                <!-- Start Product Default Single Item -->
-                                <div class="blog-list blog-grid-single-item blog-color--golden"  data-aos="fade-up"  data-aos-delay="0">
-                                    <div class="image-box">
-                                        <a href="blog-single-sidebar-left.html" class="image-link">
-                                            <img class="img-fluid" src="{{ url('public/client') }}/images/blog/blog-grid-home-1-img-5.jpg" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="content">
-                                        <ul class="post-meta">
-                                           <li>POSTED BY : <a href="#" class="author">Admin</a></li> 
-                                           <li>ON : <a href="#" class="date">APRIL 24, 2018</a></li> 
-                                        </ul>
-                                        <h6 class="title"><a href="blog-single-sidebar-left.html"> Blog image post</a></h6>
-                                        <p>Donec vitae hendrerit arcu, sit amet faucibus nisl. Cras pretium arcu ex. Aenean posuere libero eu augue condimentum rhoncus. Praesent</p>
-                                        <a href="#" class="read-more-btn icon-space-left">Read More <span class="icon"><i class="ion-ios-arrow-thin-right"></i></span></a>
-                                    </div>
-                                </div>
-                                <!-- End Product Default Single Item -->
-                            </div>
-                            <div class="col-md-6 col-12 mb-6">
-                                <!-- Start Product Default Single Item -->
-                                <div class="blog-list blog-grid-single-item blog-color--golden"  data-aos="fade-up"  data-aos-delay="200">
-                                    <div class="blog-audio-box">
-                                        <iframe class="embed-responsive-item" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/users/182537870&amp;color=%23ff5500&amp;auto_play=false&amp;hide_related=false&amp;show_comments=true&amp;show_user=true&amp;show_reposts=false&amp;show_teaser=true&amp;visual=true"></iframe>
-                                    </div>
-                                    <div class="content">
-                                        <ul class="post-meta">
-                                           <li>POSTED BY : <a href="#" class="author">Admin</a></li> 
-                                           <li>ON : <a href="#" class="date">APRIL 24, 2018</a></li> 
-                                        </ul>
-                                        <h6 class="title"><a href="blog-single-sidebar-left.html"> Blog Audio post</a></h6>
-                                        <p>Donec vitae hendrerit arcu, sit amet faucibus nisl. Cras pretium arcu ex. Aenean posuere libero eu augue condimentum rhoncus. Praesent</p>
-                                        <a href="#" class="read-more-btn icon-space-left">Read More <span class="icon"><i class="ion-ios-arrow-thin-right"></i></span></a>
-                                    </div>
-                                </div>
-                                <!-- End Product Default Single Item -->
-                            </div>
+                            @endforeach
                         </div>
                     </div>
 
                     <!-- Start Pagination -->
                     <div class="page-pagination text-center" data-aos="fade-up"  data-aos-delay="0">
-                        <ul>
+                        {{-- <ul>
                             <li><a class="active" href="#">1</a></li>
                             <li><a href="#">2</a></li>
                             <li><a href="#">3</a></li>
                             <li><a href="#"><i class="ion-ios-skipforward"></i></a></li>
-                        </ul>
+                        </ul> --}}
+                        {{$blog->links()}}
                     </div> <!-- End Pagination -->
                 </div>
             </div>

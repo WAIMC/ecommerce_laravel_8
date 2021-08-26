@@ -167,24 +167,37 @@
                 </div>
                 <div class="modal-body">
                     <div class="row">
-                        <h1>NOTE : <span>{{$view_od->note}}</span></h1>
+                        <h4><strong>Note</strong> : <span class="text-info">{{$view_od->note}}</span></h4>
                     </div>
                     <div class="row">
                         <table class="table">
                             <thead>
                                 <tr>
                                     <th>Name</th>
+                                    <th>Image</th>
+                                    <th>Color</th>
                                     <th>Quantity</th>
                                     <th>Price</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($view_od->order_orderDetail()->get() as $detail)
-                                    <tr>
-                                        <td>{{$detail->name}}</td>
-                                        <td>{{$detail->quantity}}</td>
-                                        <td>{{$detail->price}}</td>
-                                    </tr>
+                                    @foreach ($detail->getVariantProduct()->where('id',$detail->id_variant_product)->get() as $vp_detail)
+                                    <?php 
+                                        $image_list = json_decode($vp_detail->gallery);
+                                     ?>
+                                        <tr>
+                                            <td>{{$detail->name}}</td>
+                                            <td>
+                                                <img src="{{url('public/uploads/product/'.$image_list[0])}}" alt="" width="30%" height="30%">
+                                            </td>
+                                            <td>
+                                                {{$vp_detail->color}}
+                                            </td>
+                                            <td>{{$detail->quantity}}</td>
+                                            <td>{{$detail->price}}</td>
+                                        </tr> 
+                                    @endforeach
                                 @endforeach
                             </tbody>
                         </table>
@@ -193,7 +206,6 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save</button>
                 </div>
             </div>
         </div>

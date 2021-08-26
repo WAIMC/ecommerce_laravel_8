@@ -157,12 +157,17 @@
         ],
         [
             'label'=>'Blog Management',
-            'route'=>'admin.index',
+            'route'=>'blog.index',
             'icon'=>'fa-blog',
             'items'=>[
                 [
                     'label'=>'List Blog',
-                    'route'=>'admin.index',
+                    'route'=>'blog.index',
+                    'icon'=>'fa-circle nav-icon'
+                ],
+                [
+                    'label'=>'Add Blog',
+                    'route'=>'blog.create',
                     'icon'=>'fa-circle nav-icon'
                 ]
             ]

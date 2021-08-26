@@ -10,6 +10,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Product;
 use App\Models\Review;
+use App\Models\Blog;
 use Illuminate\Support\Facades\Mail;
 
 class ClientController extends Controller
@@ -25,6 +26,8 @@ class ClientController extends Controller
         // using for section THE NEW ARRIVALS and BEST SELLERS
         $new_product = Product::latest()->take(12)->get();
 
+        // using for show blog
+        $blog = Blog::all();
 
          // get variant product , show all variant product with status == 0 (get represent 1 product)
         //  foreach ($product as $value) {
@@ -41,7 +44,7 @@ class ClientController extends Controller
         //     }
         // }
 
-        return view('client.home',compact('slider','new_product','product'));
+        return view('client.home',compact('slider','new_product','product','blog'));
     }
 
     public function shop(Request $request)
@@ -129,7 +132,18 @@ class ClientController extends Controller
     {
         // get all product (add name of model quick view or add to card )
         $product = Product::all();
-        return view('client.blog',compact('product'));
+
+        $blog = Blog::orderBy('created_at','ASC')->paginate(6);
+        return view('client.blog',compact('product', 'blog'));
+    }
+
+    public function blog_detail(Request $request)
+    {
+        // get all product (add name of model quick view or add to card )
+        $product = Product::all();
+
+        $blog_detail = Blog::find($request->id);
+        return view('client.blog_detail', compact('product','blog_detail'));
     }
     
     public function about()

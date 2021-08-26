@@ -43,7 +43,8 @@ Route::prefix('admin')->middleware('adminAuth')->group(function () {
         'review'=>Admin\ReviewController::class,
         'settingLink'=>Admin\SettingLinkController::class,
         'role'=>Admin\RoleController::class,
-        'decentralize'=>Admin\DecentralizeController::class
+        'decentralize'=>Admin\DecentralizeController::class,
+        'blog'=>Admin\BlogController::class
     ]);
 
     // logout authentication
@@ -70,6 +71,7 @@ Route::get('/wishlist/destroy', 'Client\ClientController@destroyWishlist')->name
 Route::get('/checkout', 'Client\ClientController@checkout')->name('client.checkout');
 
 Route::get('/blog', 'Client\ClientController@blog')->name('client.blog');
+Route::get('/blog_detail/{id}', 'Client\ClientController@blog_detail')->name('client.blog_detail');
 
 Route::get('/about', 'Client\ClientController@about')->name('client.about');
 

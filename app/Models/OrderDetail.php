@@ -22,4 +22,10 @@ class OrderDetail extends Model
         'create_at',
         'update_at'
     ];
+
+    // get variant product
+    public function getVariantProduct()
+    {
+        return $this->hasMany(VariantProduct::class,'id','id_variant_product');
+    }
 }

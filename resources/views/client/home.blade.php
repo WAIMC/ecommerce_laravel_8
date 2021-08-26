@@ -399,152 +399,31 @@
                             <div class="swiper-container blog-slider">
                                 <!-- Additional required wrapper -->
                                 <div class="swiper-wrapper">
-                                    <!-- Start Product Default Single Item -->
-                                    <div class="blog-default-single-item blog-color--pink swiper-slide">
-                                        <div class="image-box">
-                                            <a href="blog-single-sidebar-left.html" class="image-link">
-                                                <img class="img-fluid"
-                                                    src="{{ url('public/client') }}/images/blog/blog-grid-home-1-img-1.jpg"
-                                                    alt="">
-                                            </a>
-                                        </div>
-                                        <div class="content">
-                                            <h6 class="title"><a href="blog-single-sidebar-left.html">Blog Post One</a></h6>
-                                            <p>Donec vitae hendrerit arcu, sit amet faucibus nisl. Cras pretium arcu ex.
-                                                Aenean posuere libero eu augue condimentum rhoncus. Praesent</p>
-                                            <div class="inner">
-                                                <a href="blog-single-sidebar-left.html"
-                                                    class="read-more-btn icon-space-left">Read More <span><i
-                                                            class="ion-ios-arrow-thin-right"></i></span></a>
-                                                <div class="post-meta">
-                                                    <a href="#" class="date">24 Apr</a>
+                                    @foreach ($blog as $item_blog)
+                                        <!-- Start Product Default Single Item -->
+                                        <div class="blog-default-single-item blog-color--pink swiper-slide">
+                                            <div class="image-box">
+                                                <a href="{{route('client.blog_detail', $item_blog->id)}}" class="image-link">
+                                                    <img class="img-fluid"
+                                                        src="{{ url('public/uploads/product/'.$item_blog->image) }}"
+                                                        alt="">
+                                                </a>
+                                            </div>
+                                            <div class="content">
+                                                <h6 class="title"><a href="{{route('client.blog_detail', $item_blog->id)}}">{{$item_blog->title}}</a></h6>
+                                                <p>{!! $item_blog->short_description !!}</p>
+                                                <div class="inner">
+                                                    <a href="{{route('client.blog_detail', $item_blog->id)}}"
+                                                        class="read-more-btn icon-space-left">Read More <span><i
+                                                                class="ion-ios-arrow-thin-right"></i></span></a>
+                                                    <div class="post-meta">
+                                                        <a href="#" class="date">{{ $item_blog->created_at->format('Y-m-d') }}</a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <!-- End Product Default Single Item -->
-                                    <!-- Start Product Default Single Item -->
-                                    <div class="blog-default-single-item blog-color--pink swiper-slide">
-                                        <div class="image-box">
-                                            <a href="blog-single-sidebar-left.html" class="image-link">
-                                                <img class="img-fluid"
-                                                    src="{{ url('public/client') }}/images/blog/blog-grid-home-1-img-2.jpg"
-                                                    alt="">
-                                            </a>
-                                        </div>
-                                        <div class="content">
-                                            <h6 class="title"><a href="blog-single-sidebar-left.html">Blog Post Two</a></h6>
-                                            <p>Donec vitae hendrerit arcu, sit amet faucibus nisl. Cras pretium arcu ex.
-                                                Aenean posuere libero eu augue condimentum rhoncus. Praesent</p>
-                                            <div class="inner">
-                                                <a href="#" class="read-more-btn icon-space-left">Read More <span><i
-                                                            class="ion-ios-arrow-thin-right"></i></span></a>
-                                                <div class="post-meta">
-                                                    <a href="blog-single-sidebar-left.html" class="date">24 Apr</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- End Product Default Single Item -->
-                                    <!-- Start Product Default Single Item -->
-                                    <div class="blog-default-single-item blog-color--pink swiper-slide">
-                                        <div class="image-box">
-                                            <a href="blog-single-sidebar-left.html" class="image-link">
-                                                <img class="img-fluid"
-                                                    src="{{ url('public/client') }}/images/blog/blog-grid-home-1-img-3.jpg"
-                                                    alt="">
-                                            </a>
-                                        </div>
-                                        <div class="content">
-                                            <h6 class="title"><a href="blog-single-sidebar-left.html">Blog Post Three</a>
-                                            </h6>
-                                            <p>Donec vitae hendrerit arcu, sit amet faucibus nisl. Cras pretium arcu ex.
-                                                Aenean posuere libero eu augue condimentum rhoncus. Praesent</p>
-                                            <div class="inner">
-                                                <a href="blog-single-sidebar-left.html"
-                                                    class="read-more-btn icon-space-left">Read More <span><i
-                                                            class="ion-ios-arrow-thin-right"></i></span></a>
-                                                <div class="post-meta">
-                                                    <a href="#" class="date">24 Apr</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- End Product Default Single Item -->
-                                    <!-- Start Product Default Single Item -->
-                                    <div class="blog-default-single-item blog-color--pink swiper-slide">
-                                        <div class="image-box">
-                                            <a href="blog-single-sidebar-left.html" class="image-link">
-                                                <img class="img-fluid"
-                                                    src="{{ url('public/client') }}/images/blog/blog-grid-home-1-img-4.jpg"
-                                                    alt="">
-                                            </a>
-                                        </div>
-                                        <div class="content">
-                                            <h6 class="title"><a href="blog-single-sidebar-left.html">Blog Post Four</a>
-                                            </h6>
-                                            <p>Donec vitae hendrerit arcu, sit amet faucibus nisl. Cras pretium arcu ex.
-                                                Aenean posuere libero eu augue condimentum rhoncus. Praesent</p>
-                                            <div class="inner">
-                                                <a href="blog-single-sidebar-left.html"
-                                                    class="read-more-btn icon-space-left">Read More <span><i
-                                                            class="ion-ios-arrow-thin-right"></i></span></a>
-                                                <div class="post-meta">
-                                                    <a href="#" class="date">24 Apr</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- End Product Default Single Item -->
-                                    <!-- Start Product Default Single Item -->
-                                    <div class="blog-default-single-item blog-color--pink swiper-slide">
-                                        <div class="image-box">
-                                            <a href="blog-single-sidebar-left.html" class="image-link">
-                                                <img class="img-fluid"
-                                                    src="{{ url('public/client') }}/images/blog/blog-grid-home-1-img-5.jpg"
-                                                    alt="">
-                                            </a>
-                                        </div>
-                                        <div class="content">
-                                            <h6 class="title"><a href="blog-single-sidebar-left.html">Blog Post Five</a>
-                                            </h6>
-                                            <p>Donec vitae hendrerit arcu, sit amet faucibus nisl. Cras pretium arcu ex.
-                                                Aenean posuere libero eu augue condimentum rhoncus. Praesent</p>
-                                            <div class="inner">
-                                                <a href="blog-single-sidebar-left.html"
-                                                    class="read-more-btn icon-space-left">Read More <span><i
-                                                            class="ion-ios-arrow-thin-right"></i></span></a>
-                                                <div class="post-meta">
-                                                    <a href="#" class="date">24 Apr</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- End Product Default Single Item -->
-                                    <!-- Start Product Default Single Item -->
-                                    <div class="blog-default-single-item blog-color--pink swiper-slide">
-                                        <div class="image-box">
-                                            <a href="blog-single-sidebar-left.html" class="image-link">
-                                                <img class="img-fluid"
-                                                    src="{{ url('public/client') }}/images/blog/blog-grid-home-1-img-6.jpg"
-                                                    alt="">
-                                            </a>
-                                        </div>
-                                        <div class="content">
-                                            <h6 class="title"><a href="blog-single-sidebar-left.html">Blog Post Six</a></h6>
-                                            <p>Donec vitae hendrerit arcu, sit amet faucibus nisl. Cras pretium arcu ex.
-                                                Aenean posuere libero eu augue condimentum rhoncus. Praesent</p>
-                                            <div class="inner">
-                                                <a href="blog-single-sidebar-left.html"
-                                                    class="read-more-btn icon-space-left">Read More <span><i
-                                                            class="ion-ios-arrow-thin-right"></i></span></a>
-                                                <div class="post-meta">
-                                                    <a href="#" class="date">24 Apr</a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- End Product Default Single Item -->
+                                        <!-- End Product Default Single Item -->
+                                    @endforeach
                                 </div>
                             </div>
                             <!-- If we need navigation buttons -->

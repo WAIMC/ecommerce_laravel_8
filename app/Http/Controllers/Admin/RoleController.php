@@ -40,7 +40,7 @@ class RoleController extends Controller
                     strpos($name,'admin') !== false || strpos($name,'category') !== false || strpos($name,'product') !== false || 
                     strpos($name,'variantProduct') !== false || strpos($name,'banner') !== false || strpos($name,'order') !== false || 
                     strpos($name,'cusMan') !== false || strpos($name,'review') !== false || strpos($name,'settingLink') !== false || 
-                    strpos($name,'role') !== false || strpos($name,'decentralize') !== false
+                    strpos($name,'role') !== false || strpos($name,'decentralize') !== false || strpos($name,'blog') !== false
                 ){
                     if(!in_array(substr($rou->getName(), 0, strpos($rou->getName(), '.')), $routes)){
                         array_push($routes, substr($rou->getName(), 0, strpos($rou->getName(), '.')));
@@ -105,7 +105,7 @@ class RoleController extends Controller
                     strpos($name,'admin') !== false || strpos($name,'category') !== false || strpos($name,'product') !== false || 
                     strpos($name,'variantProduct') !== false || strpos($name,'banner') !== false || strpos($name,'order') !== false || 
                     strpos($name,'cusMan') !== false || strpos($name,'review') !== false || strpos($name,'settingLink') !== false || 
-                    strpos($name,'role') !== false || strpos($name,'decentralize') !== false
+                    strpos($name,'role') !== false || strpos($name,'decentralize') !== false || strpos($name,'blog') !== false
                 ){
                     if(!in_array(substr($rou->getName(), 0, strpos($rou->getName(), '.')), $routes)){
                         array_push($routes, substr($rou->getName(), 0, strpos($rou->getName(), '.')));
